@@ -1,3 +1,9 @@
+<?php
+if (session_status() != PHP_SESSION_NONE) {
+    session_destroy();
+}
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,37 +15,78 @@
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/registration.js'])
 </head>
 <body>
-    <div class="auth-container">
-        <h1>Register</h1>
-        <form method="POST" action="{{ route("register") }}">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="registration-step registration-step-1" data-step="1">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" value="{{ old("name") }}" class="form-control" id="name">
+    <div class="auth-wrapper">
+        <div class="auth-container" id="registrationContainer">
+            <h1>Registration</h1>
+
+            <div class="progress-bar">
+                <div class="progress-bar-fill-1 progress-bar-fill filled">
+                    <h2>1</h2>
                 </div>
-                <button class="registration-step-button" data-step="1">Next</button>
+                <div class="progress-bar-fill-2 progress-bar-fill">
+                    <h2>2</h2>
+                </div>
+                <div class="progress-bar-fill-3 progress-bar-fill">
+                    <h2>3</h2>
+                </div>
             </div>
-            <div class="registration-step registration-step-2 d-none" data-step="2">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="text" name="email" value="{{ old("email") }}" class="form-control" id="email">
-                </div>
-                <button class="registration-step-button" data-step="2">Next</button>
+            <div class="form-content">
+                <form method="POST" id="registration-step-1" action="{{ route('register.postStep1') }}">
+                    <p id="email-error" class="error"></p>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="form-input-field">
+                        <div class="form-input-group">
+                            <div class="form-input">
+                                <label for="name" class="auth-label">Name</label>
+                                <input type="text" name="name" id="name" class="auth-input">
+                            </div>
+                            <div class="form-input">
+                                <label for="surname" class="auth-label">Surname</label>
+                                <input type="text" name="surname" id="surname" class="auth-input">
+                            </div>
+                        </div>
+                        <div class="form-input">
+                            <label for="email" class="auth-label">E-mail</label>
+                            <input type="text" name="email" id="email" class="auth-input">
+                        </div>
+                        <div class="form-input">
+                            <label for="email" class="auth-label">E-mail</label>
+                            <input type="text" name="email" id="email" class="auth-input">
+                        </div>
+                    </div>
+                    <button type="submit">Next</button>
+                </form>
+
+                <form method="POST" id="registration-step-2" action="{{ route('register.postStep2') }}" class="d-none">
+                    <p id="username-error" class="error"></p>
+                    <div class="form-input-field">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <label for="username" class="auth-label">Username</label>
+                        <input type="text" name="username" id="username" class="auth-input">
+                    </div>
+                    <button type="submit">Next</button>
+                </form>
+
+                <form method="POST" id="registration-step-3" action="{{ route('register.postStep3') }}" class="d-none">
+                    <p id="password-error" class="error"></p>
+                    <div class="form-input-field">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                        <label for="password" class="auth-label">Password</label>
+                        <input type="password" name="password" id="password" class="auth-input">
+
+                        <label for="password_confirmation" class="auth-label">Confirm Password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="auth-input">
+                    </div>
+                    <button type="submit">Next</button>
+                </form>
             </div>
-            <div class="registration-step registration-step-3 d-none" data-step="3">
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="text" name="password" value="{{ old("password") }}" class="form-control" id="password">
-                </div>
-                <div class="form-group">
-                    <label for="password_confirmation">Confirm Password:</label>
-                    <input type="text" name="password_confirmation" value="{{ old("password_confirmation") }}" class="form-control" id="password_confirmation">
-                </div>
-                <button class="registration-step-button" data-step="3">Next</button>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+            <script>
+                let postStep1 = "{{ route('register.postStep1') }}";
+                let postStep2 = "{{ route('register.postStep2') }}";
+                let postStep3 = "{{ route('register.postStep3') }}";
+            </script>
+        </div>
     </div>
 </body>
 </html>
