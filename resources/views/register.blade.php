@@ -45,13 +45,11 @@ session_start();
                                 <input type="text" name="surname" id="surname" class="auth-input">
                             </div>
                         </div>
-                        <div class="form-input">
-                            <label for="email" class="auth-label">E-mail</label>
-                            <input type="text" name="email" id="email" class="auth-input">
-                        </div>
-                        <div class="form-input">
-                            <label for="email" class="auth-label">E-mail</label>
-                            <input type="text" name="email" id="email" class="auth-input">
+                        <div class="form-input-group">
+                            <div class="form-input">
+                                <label for="email" class="auth-label">E-mail</label>
+                                <input type="text" name="email" id="email" class="auth-input">
+                            </div>
                         </div>
                     </div>
                     <button type="submit">Next</button>
