@@ -59,8 +59,10 @@ session_start();
                     <p id="username-error" class="error"></p>
                     <div class="form-input-field">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <label for="username" class="auth-label">Username</label>
-                        <input type="text" name="username" id="username" class="auth-input">
+                        <div class="form-input">
+                            <label for="username" class="auth-label">Username</label>
+                            <input type="text" name="username" id="username" class="auth-input">
+                        </div>
                     </div>
                     <button type="submit">Next</button>
                 </form>

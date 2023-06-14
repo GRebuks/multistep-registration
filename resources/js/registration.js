@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then((data) => {
                 if (data.name) {
-                    document.getElementById('name').classList.add('is-invalid');
+                    document.getElementById('username').classList.add('is-invalid');
                     document.getElementById('username-error').innerHTML = data.name;
                 }
                 if (data.step === 3) {
