@@ -19,6 +19,9 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');
 
 Route::post('/register', [RegistrationController::class, 'store'])->name('register');
 Route::post('/register/pstep1', [RegistrationController::class, 'validate1'])->name('register.postStep1');

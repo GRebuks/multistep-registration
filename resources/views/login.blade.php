@@ -15,6 +15,9 @@
             <div class="form-content">
                 <form method="POST" action="{{ route('login') }}" class="registration-step">
                     @csrf
+                    @foreach ($errors->all() as $error)
+                        <p class="error">{{ $error }}</p>
+                    @endforeach
                     <div class="form-input-field">
                         <div class="form-input-group">
                             <div class="form-input">

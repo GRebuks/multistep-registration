@@ -22,11 +22,10 @@ class LoginController extends Controller
             return back()->withErrors([
                 'message' => 'Wrong username or password. Please try again.',
             ]);
-            //q: how do i make this message appear in the login page?
-            //a: use the $errors variable in the login page
         }
-
-        return redirect()->route('home');
+        $user = auth()->user();
+        session()->put('user', $user);
+        return redirect()->route('profile');
     }
 
 }
