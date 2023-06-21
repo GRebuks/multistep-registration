@@ -24,26 +24,45 @@ class RegistrationController extends Controller
      */
     public function store(): RedirectResponse
     {
-        $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed',
+        session_start();
+        // Checks if all the session variables are set in order to prevent direct access to this route
+        if (!isset($_SESSION['name'], $_SESSION['surname'], $_SESSION['username'], $_SESSION['birthday'], $_SESSION['email'], $_SESSION['phone'], $_SESSION['password'])) {
+            return redirect()->route('register');
+        }
+
+        $user = User::create([
+            'name' => $_SESSION['name'],
+            'surname' => $_SESSION['surname'],
+            'username' => $_SESSION['username'],
+            'birthday' => $_SESSION['birthday'],
+            'email' => $_SESSION['email'],
+            'phone' => $_SESSION['phone'],
+            'password' => $_SESSION['password'],
         ]);
-        $user = User::create(request(['name', 'email', 'password']));
+        // Unset all the session variables and destroy the session
+        session_unset();
+        session_destroy();
         event(new Registered($user));
         return redirect()->route('login');
     }
 
     public function validate1(): JsonResponse
     {
+        session_start();
         try {
             $this->validate(request(), [
-                'email' => 'required|email',
+                'name' => 'required',
+                'surname' => 'required',
+                'username' => 'required|unique:users',
+                'birthday' => 'required|date',
             ]);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
         }
-        $_SESSION['email'] = request('email');
+        $_SESSION['name'] = request('name');
+        $_SESSION['surname'] = request('surname');
+        $_SESSION['username'] = request('username');
+        $_SESSION['birthday'] = request('birthday');
         $data = [
             'step' => 2,
         ];
@@ -52,22 +71,26 @@ class RegistrationController extends Controller
 
     public function validate2(): JsonResponse
     {
+        session_start();
         try {
             $this->validate(request(), [
-                'name' => 'required',
+                'email' => 'required|email|unique:users',
+                'phone' => 'required|unique:users',
             ]);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
         }
-        $_SESSION['name'] = request('name');
+        $_SESSION['email'] = request('email');
+        $_SESSION['phone'] = request('phone');
         $data = [
             'step' => 3,
         ];
         return \response()->json($data);
     }
 
-    public function validate3(): JsonResponse
+    public function validate3()
     {
+        session_start();
         try {
             $this->validate(request(), [
                 'password' => 'required|confirmed',

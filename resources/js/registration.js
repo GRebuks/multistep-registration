@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let progressBarFills = document.querySelectorAll('.progress-bar-fill');
 
+    const endForm = document.getElementById('submit-form');
+
     firstForm.addEventListener('submit', (event) => {
         disableFormButton(firstForm);
         event.preventDefault();
@@ -16,10 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then((data) => {
                 enableFormButton(firstForm);
-                if (data.email) {
-                    document.getElementById('email').classList.add('is-invalid');
-                    document.getElementById('email-error').innerHTML = data.email;
+                let keys = Object.keys(data);
+
+                if (keys[0] !== 'step') {
+                    document.getElementById(keys[0]).classList.add('is-invalid');
+                    document.getElementById('personal-error').innerHTML = data[keys[0]];
                 }
+
                 if (data.step === 2) {
                     loadStep2();
                 }
@@ -38,9 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then((data) => {
-                if (data.name) {
-                    document.getElementById('username').classList.add('is-invalid');
-                    document.getElementById('username-error').innerHTML = data.name;
+                let keys = Object.keys(data);
+
+                if (keys[0] !== 'step') {
+                    document.getElementById(keys[0]).classList.add('is-invalid');
+                    document.getElementById('contact-error').innerHTML = data[keys[0]];
                 }
                 if (data.step === 3) {
                     loadStep3();
@@ -60,13 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then((data) => {
-                if (data.password) {
-                    document.getElementById('password').classList.add('is-invalid');
-                    document.getElementById('password_confirmation').classList.add('is-invalid');
-                    document.getElementById('password-error').innerHTML = data.password;
+                let keys = Object.keys(data);
+
+                if (keys[0] !== 'step') {
+                    document.getElementById(keys[0]).classList.add('is-invalid');
+                    document.getElementById('password-error').innerHTML = data[keys[0]];
                 }
-                if (data.step === 4) {
-                    loadStep2();
+                else {
+                    endForm.submit();
                 }
             })
             .catch((error) => {
@@ -75,13 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function loadStep2() {
-        firstForm.classList.add('d-none');
-        secondForm.classList.remove('d-none');
         progressBarFills[1].classList.add('filled');
+        submitForm1(firstForm, secondForm);
     }
     function loadStep3() {
-        secondForm.classList.add('d-none');
-        thirdForm.classList.remove('d-none');
+        submitForm1(secondForm, thirdForm);
         progressBarFills[2].classList.add('filled');
     }
 });
@@ -94,4 +100,14 @@ function enableFormButton(form) {
 function disableFormButton(form) {
     form.querySelectorAll('button')[0].classList.add('disabled');
     form.querySelectorAll('button')[0].setAttribute('disabled', 'disabled');
+}
+
+function submitForm1(form1, form2) {
+    form1.style.animation = 'slide-out 0.5s forwards';
+
+    form1.addEventListener('animationend', function() {
+        form1.classList.add('d-none');
+        form2.classList.remove('d-none');
+        form2.style.animation = 'slide-in 0.5s forwards';
+    });
 }

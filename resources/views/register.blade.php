@@ -31,8 +31,9 @@ session_start();
                 </div>
             </div>
             <div class="form-content">
-                <form method="POST" id="registration-step-1" action="{{ route('register.postStep1') }}">
-                    <p id="email-error" class="error"></p>
+                <form method="POST" id="registration-step-1" action="{{ route('register.postStep1') }}" class="registration-step">
+                    <h2>Personal information</h2>
+                    <p id="personal-error" class="error"></p>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-input-field">
                         <div class="form-input-group">
@@ -40,6 +41,7 @@ session_start();
                                 <label for="name" class="auth-label">Name</label>
                                 <input type="text" name="name" id="name" class="auth-input">
                             </div>
+
                             <div class="form-input">
                                 <label for="surname" class="auth-label">Surname</label>
                                 <input type="text" name="surname" id="surname" class="auth-input">
@@ -47,38 +49,66 @@ session_start();
                         </div>
                         <div class="form-input-group">
                             <div class="form-input">
+                                <label for="username" class="auth-label">Username</label>
+                                <input type="text" name="username" id="username" class="auth-input">
+                            </div>
+                        </div>
+                        <div class="form-input-group">
+                            <div class="form-input">
+                                <label for="birthday" class="auth-label">Birthday</label>
+                                <input type="date" name="birthday" id="birthday" class="auth-input">
+                            </div>
+                        </div>
+
+                    </div>
+                    <button type="submit">Next</button>
+                </form>
+
+                <form method="POST" id="registration-step-2" action="{{ route('register.postStep2') }}" class="d-none registration-step">
+                    <h2>Contact information</h2>
+                    <p id="contact-error" class="error"></p>
+                    <div class="form-input-field">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="form-input-group">
+                            <div class="form-input">
                                 <label for="email" class="auth-label">E-mail</label>
                                 <input type="text" name="email" id="email" class="auth-input">
                             </div>
                         </div>
-                    </div>
-                    <button type="submit">Next</button>
-                </form>
-
-                <form method="POST" id="registration-step-2" action="{{ route('register.postStep2') }}" class="d-none">
-                    <p id="username-error" class="error"></p>
-                    <div class="form-input-field">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <div class="form-input">
-                            <label for="username" class="auth-label">Username</label>
-                            <input type="text" name="username" id="username" class="auth-input">
+                        <div class="form-input-group">
+                            <div class="form-input">
+                                <label for="phone" class="auth-label">Phone number</label>
+                                <input type="tel" name="phone" id="phone" pattern="[0-9]{8}" class="auth-input">
+                            </div>
                         </div>
+
                     </div>
                     <button type="submit">Next</button>
                 </form>
 
-                <form method="POST" id="registration-step-3" action="{{ route('register.postStep3') }}" class="d-none">
+                <form method="POST" id="registration-step-3" action="{{ route('register.postStep3') }}" class="d-none registration-step">
+                    <h2>Password</h2>
                     <p id="password-error" class="error"></p>
                     <div class="form-input-field">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="form-input-group">
+                            <div class="form-input">
+                                <label for="password" class="auth-label">Password</label>
+                                <input type="password" name="password" id="password" class="auth-input">
+                            </div>
+                        </div>
 
-                        <label for="password" class="auth-label">Password</label>
-                        <input type="password" name="password" id="password" class="auth-input">
-
-                        <label for="password_confirmation" class="auth-label">Confirm Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="auth-input">
-                    </div>
-                    <button type="submit">Next</button>
+                        <div class="form-input-group">
+                            <div class="form-input">
+                                <label for="password_confirmation" class="auth-label">Confirm Password</label>
+                                <input type="password" name="password_confirmation" id="password_confirmation" class="auth-input">
+                            </div>
+                        </div>
+                            </div>
+                    <button type="submit">Submit</button>
+                </form>
+                <form method="POST" action="{{ route('register') }}" id="submit-form">
+                    @csrf
                 </form>
             </div>
             <script>
