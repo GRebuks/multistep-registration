@@ -11,7 +11,8 @@
     @if(!session()->has('user'))
         <p>User is not logged in</p>
     @else
-        <p>User is logged in</p>
+        <h2>{{ session()->get('user')->username }}</h2>
+        <p>{{ session()->get('user')->name }} {{ session()->get('user')->surname }}</p>
     @endif
 </body>
 </html>

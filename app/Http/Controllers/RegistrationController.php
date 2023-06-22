@@ -54,7 +54,7 @@ class RegistrationController extends Controller
                 'name' => 'required',
                 'surname' => 'required',
                 'username' => 'required|unique:users',
-                'birthday' => 'required|date',
+                'birthday' => 'required|date|before:today',
             ]);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
