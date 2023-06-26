@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Document</title>
 </head>
-<body>
+<body class="antialiased">
 <div class="game-container" id="shooter">
     <script>
         // Phaser shooter game
@@ -90,7 +90,7 @@
 
             // create food
             for (let i = 0; i < 200; i++) {
-                food = foodGroup.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(0, 800), 'food');
+                food = foodGroup.create(Phaser.Math.Between(0, config.width), Phaser.Math.Between(0, config.height), 'food');
                 food.setCollideWorldBounds(true);
                 food.setBounce(1);
                 food.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200));
@@ -341,7 +341,7 @@
         }
         function bombExplode(bomb) {
             bomb.destroy();
-            const numBullets = 200; // Number of bullets to launch
+            const numBullets = 300; // Number of bullets to launch
             const bulletSpeed = 300; // Speed of the bullets
             const bulletRotationOffset = Math.PI;
 
@@ -349,7 +349,7 @@
                 const angle = (i / numBullets) * Math.PI * 2; // Angle of each bullet
                 const velocityX = Math.cos(angle) * bulletSpeed;
                 const velocityY = Math.sin(angle) * bulletSpeed;
-                let bulletLifetime = Phaser.Math.Between(500, 700);
+                let bulletLifetime = Phaser.Math.Between(650, 900);
 
                 // Create a bullet with the calculated velocity
                 let bullet = bullets.create(bomb.x, bomb.y, 'bullet');
@@ -357,12 +357,13 @@
                 bullet.rotation = Phaser.Math.Angle.Between(bullet.x, bullet.y, bomb.x, bomb.y) + bulletRotationOffset;
                 setTimeout(function() {
                     bullet.destroy();
-                }, bulletLifetime);
+                }, bulletLifetime + 400);
             }
         }
         function flakExplode(flak) {
             flak.destroy();
-            const numBullets = 16; // Number of bullets to launch
+
+            const numBullets = 60; // Number of bullets to launch
             const bulletSpeed = 2000; // Speed of the bullets
             const bulletRotationOffset = Math.PI;
 

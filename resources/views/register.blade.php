@@ -14,11 +14,11 @@ session_start();
     <title>Multistep - Register</title>
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/registration.js'])
 </head>
-<body>
+<body class="antialiased">
     <div class="auth-wrapper">
         <div class="auth-container" id="registrationContainer">
-            <h1>Registration</h1>
-            <a href="{{ route('login') }}" class="auth-redirect">Login</a>
+            <h1 class="text-3xl font-bold">Registration</h1>
+            <a href="{{ route('login') }}" class="auth-redirect text-2xl">Login</a>
             <div class="progress-bar">
                 <div class="progress-bar-fill-1 progress-bar-fill filled">
                     <h2>1</h2>

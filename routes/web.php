@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistrationController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Allows access to the app/assets folder
@@ -33,6 +34,15 @@ Route::get('/register', function () {
     session_destroy();
     return view('register');
 })->name('register');
+
+//logout
+Route::get('/logout', function () {
+    session_start();
+    session_unset();
+    session_destroy();
+    Auth::guard('web')->logout();
+    return redirect('/');
+})->name('logout');
 
 Route::post('/register', [RegistrationController::class, 'store'])->name('register');
 Route::post('/register/pstep1', [RegistrationController::class, 'validate1'])->name('register.postStep1');
