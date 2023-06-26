@@ -18,7 +18,7 @@ session_start();
     <div class="auth-wrapper">
         <div class="auth-container" id="registrationContainer">
             <h1>Registration</h1>
-
+            <a href="{{ route('login') }}" class="auth-redirect">Login</a>
             <div class="progress-bar">
                 <div class="progress-bar-fill-1 progress-bar-fill filled">
                     <h2>1</h2>

@@ -5,21 +5,20 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-{{--    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>--}}
     <script src="//cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Document</title>
 </head>
 <body>
+<div class="game-container" id="shooter">
     <script>
-        // Phaser snake game
-
-        // game config
+        // Phaser shooter game
         const config = {
             type: Phaser.AUTO,
             width: 1600,
             height: 800,
             backgroundColor: '#000000',
-            parent: 'phaser-example',
+            parent: 'shooter',
             physics: {
                 default: 'arcade',
                 arcade: {
@@ -34,18 +33,23 @@
             }
         };
 
-        // game letiables
+        // game variables
         let game = new Phaser.Game(config);
-        let snake;
+        let plane;
         let food;
         let cursors;
         let score = 0;
         let scoreText;
         let gameOver = false;
         let movementVector;
-        let snakePosition;
-        let snakePositionL;
-        let snakePositionR;
+        let planePosition, planePositionL, planePositionR;
+        let graphics;
+        let bullets;
+        let bombs;
+        let flaks;
+        let foodGroup;
+        let nextFlak = 0;
+        let currentWing = 0;
 
         // preload assets
         function preload ()
@@ -60,77 +64,74 @@
         // create game objects
         function create ()
         {
+            // shows user movement vector
             graphics = this.add.graphics();
+
+            //
             bullets = this.physics.add.group({
                 defaultKey: 'bullet',
-                //maxSize: 1000 // Adjust the maximum number of bullets as needed
             });
             bombs = this.physics.add.group({
                 defaultKey: 'bomb',
-                maxSize: 100 // Adjust the maximum number of bullets as needed
+                maxSize: 4,
             });
             flaks = this.physics.add.group({
                 defaultKey: 'flak',
-                maxSize: 100 // Adjust the maximum number of bullets as needed
+                maxSize: 20,
             });
-            // create snake
-            snake = this.physics.add.group({
-                key: 'body',
-                repeat: 0,
-                setXY: { x: 400, y: 300, stepX: 32 }
-            });
+
+            plane = this.physics.add.image(400, 300, 'body');
+
             foodGroup = this.physics.add.group({
                 key: 'food',
                 repeat: 0,
                 setXY: { x: 400, y: 300, stepX: 32 }
             });
+
             // create food
-            for (let i = 0; i < 2000; i++) {
+            for (let i = 0; i < 200; i++) {
                 food = foodGroup.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(0, 800), 'food');
                 food.setCollideWorldBounds(true);
                 food.setBounce(1);
                 food.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200));
                 food.setDepth(1);
             }
+
             // create score text
             scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
 
             // create keyboard input
             cursors = this.input.keyboard.createCursorKeys();
 
-            // set snake velocity
-            snake.children.iterate(function (child) {
-                child.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200));
-            });
+            // set plane velocity
+            plane.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200));
 
-            // set snake collision
+            // set plane collision
             food.setDepth(1);
-            this.physics.add.collider(snake, snake);
             this.physics.world.collide(bullets, foodGroup, handleBulletFoodCollision, null, this);
-            this.input.keyboard.on('keydown', event => handleKeyPress(event, snakePosition, movementVector), this);
+            this.input.keyboard.on('keydown', event => handleKeyPress(event, planePosition, movementVector), this);
         }
 
         // update game objects
         function update ()
         {
-            movementVector = new Phaser.Math.Vector2(snake.getChildren()[0].body.velocity.x, snake.getChildren()[0].body.velocity.y);
-            snakePosition = new Phaser.Math.Vector2(snake.getChildren()[0].body.x + snake.getChildren()[0].width / 2, snake.getChildren()[0].body.y + snake.getChildren()[0].height / 2);
+            movementVector = new Phaser.Math.Vector2(plane.body.velocity.x, plane.body.velocity.y);
+            planePosition = new Phaser.Math.Vector2(plane.body.x + plane.width / 2, plane.body.y + plane.height / 2);
 
-            snakePositionL = new Phaser.Math.Vector2(snake.getChildren()[0].body.x + snake.getChildren()[0].width / 3, snake.getChildren()[0].body.y + snake.getChildren()[0].height / 3);
-            snakePositionR = new Phaser.Math.Vector2(snake.getChildren()[0].body.x + snake.getChildren()[0].width / 3 * 2, snake.getChildren()[0].body.y + snake.getChildren()[0].height / 3 * 2);
+            planePositionL = new Phaser.Math.Vector2(plane.body.x + plane.width / 3, plane.body.y + plane.height / 3);
+            planePositionR = new Phaser.Math.Vector2(plane.body.x + plane.width / 3 * 2, plane.body.y + plane.height / 3 * 2);
 
+            plane.rotation = Phaser.Math.Angle.Between(0, 0, movementVector.x, movementVector.y);
 
-            snake.getChildren()[0].rotation = Phaser.Math.Angle.Between(0, 0, movementVector.x, movementVector.y);
-
-            // Set the position of the Graphics object to the snake's position
-            graphics.x = snakePosition.x;
-            graphics.y = snakePosition.y;
+            // Set the position of the Graphics object to the plane's position
+            graphics.x = planePosition.x;
+            graphics.y = planePosition.y;
 
             // Clear the Graphics object
             graphics.clear();
 
             // Draw the movement vector
-            graphics.lineStyle(2, 0xFFFFFF, 1);
+            graphics.lineStyle(2, 0x4d4d4d, 1);
             graphics.beginPath();
             graphics.moveTo(0, 0);
             graphics.lineTo(movementVector.x, movementVector.y);
@@ -145,23 +146,14 @@
                 return;
             }
 
-            // Check if the snake has crossed the screen borders
-            if (snake.getChildren()[0].body.x < 0) {
-                // If the snake crosses the left border, wrap it to the right side
-                snake.getChildren()[0].body.x = game.config.width;
-            } else if (snake.getChildren()[0].body.x > game.config.width) {
-                // If the snake crosses the right border, wrap it to the left side
-                snake.getChildren()[0].body.x = 0;
-            }
+            // User border wrap
+            if (plane.body.x < 0) plane.body.x = game.config.width;
+            else if (plane.body.x > game.config.width) plane.body.x = 0;
 
-            if (snake.getChildren()[0].body.y < 0) {
-                // If the snake crosses the top border, wrap it to the bottom side
-                snake.getChildren()[0].body.y = game.config.height;
-            } else if (snake.getChildren()[0].body.y > game.config.height) {
-                // If the snake crosses the bottom border, wrap it to the top side
-                snake.getChildren()[0].body.y = 0;
-            }
+            if (plane.body.y < 0) plane.body.y = game.config.height;
+            else if (plane.body.y > game.config.height) plane.body.y = 0;
 
+            // Bullet border wrap
             bullets.children.each(function (b) {
                 if (b.body.x < 0) {
                     b.body.x = game.config.width;
@@ -177,54 +169,73 @@
                 }
             });
 
-
-            // check if snake is eating itself
-            let head = snake.getChildren()[0];
-            snake.children.iterate(function (child) {
-                if (child != head && child.x == head.x && child.y == head.y) {
-                    gameOver = true;
-                    return;
+            // Flak border wrap
+            flaks.children.each(function (f) {
+                if (f.body.x < 0) {
+                    f.body.x = game.config.width;
+                }
+                if (f.body.x > game.config.width) {
+                    f.body.x = 0;
+                }
+                if (f.body.y < 0) {
+                    f.body.y = game.config.height;
+                }
+                if (f.body.y > game.config.height) {
+                    f.body.y = 0;
                 }
             });
 
+
+
             // check keyboard input
             if (cursors.left.isDown) {
-                if (snake.getChildren()[0].body.velocity.x > 0) {
-                    snake.setVelocityX(snake.getChildren()[0].body.velocity.x - 20);
+                if (plane.body.velocity.x > 0) {
+                    plane.setVelocityX(plane.body.velocity.x - 20);
                 } else {
-                    snake.setVelocityX(snake.getChildren()[0].body.velocity.x - 10);
+                    plane.setVelocityX(plane.body.velocity.x - 10);
                 }
 
             }
             if (cursors.right.isDown) {
-                if(snake.getChildren()[0].body.velocity.x < 0) {
-                    snake.setVelocityX(snake.getChildren()[0].body.velocity.x + 20);
+                if(plane.body.velocity.x < 0) {
+                    plane.setVelocityX(plane.body.velocity.x + 20);
                 } else {
-                    snake.setVelocityX(snake.getChildren()[0].body.velocity.x + 10);
+                    plane.setVelocityX(plane.body.velocity.x + 10);
                 }
 
             }
             if (cursors.up.isDown) {
-                if (snake.getChildren()[0].body.velocity.y > 0) {
-                    snake.setVelocityY(snake.getChildren()[0].body.velocity.y - 20);
+                if (plane.body.velocity.y > 0) {
+                    plane.setVelocityY(plane.body.velocity.y - 20);
                 } else {
-                    snake.setVelocityY(snake.getChildren()[0].body.velocity.y - 10);
+                    plane.setVelocityY(plane.body.velocity.y - 10);
                 }
             }
 
             if (cursors.down.isDown) {
-                if(snake.getChildren()[0].body.velocity.y < 0) {
-                    snake.setVelocityY(snake.getChildren()[0].body.velocity.y + 20);
+                if(plane.body.velocity.y < 0) {
+                    plane.setVelocityY(plane.body.velocity.y + 20);
                 } else {
-                    snake.setVelocityY(snake.getChildren()[0].body.velocity.y + 10);
+                    plane.setVelocityY(plane.body.velocity.y + 10);
                 }
             }
             if (cursors.space.isDown) {
-                shootBullet(snakePositionL, movementVector);
-                shootBullet(snakePositionR, movementVector);
+                shootBullet(planePositionL, movementVector);
+                shootBullet(planePositionR, movementVector);
             }
             if (cursors.shift.isDown) {
-                shootFlak(snakePosition, movementVector);
+                if (this.time.now > nextFlak) {
+                    //shoot flak
+                    if (currentWing === 0) {
+                        currentWing = 1;
+                        shootFlak(planePositionR, movementVector);
+                    } else {
+                        currentWing = 0;
+                        shootFlak(planePositionL, movementVector);
+                    }
+                    //set nextFlak to 100ms in the future
+                    nextFlak = this.time.now + 100;
+                }
             }
         }
 
@@ -247,12 +258,6 @@
                     food.setDepth(1);
                 }
             }
-            //
-            // food = foodGroup.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(0, 800), 'food');
-            // food.setCollideWorldBounds(true);
-            // food.setBounce(1);
-            // food.setVelocity(Phaser.Math.Between(-500, 500), Phaser.Math.Between(-500, 500));
-            // food.setDepth(1);
 
             score += 1;
             scoreText.setText('Score: ' + score);
@@ -274,7 +279,7 @@
 
             if (bullet) {
                 // Set the bullet's velocity based on the direction vector and bullet speed
-                bullet.setVelocity(directionVector.x * bulletSpeed, directionVector.y * bulletSpeed);
+                bullet.setVelocity(directionVector.x * bulletSpeed + plane.body.velocity.x, directionVector.y * bulletSpeed + plane.body.velocity.y);
                 bullet.rotation = Phaser.Math.Angle.Between(0, 0, directionVector.x, directionVector.y);
 
                 // Destroy the bullet after the specified lifetime
@@ -311,7 +316,7 @@
         }
         function shootFlak(startPosition, directionVector) {
             let bulletSpeed = 500; // Adjust the bullet speed as needed
-            let bulletLifetime = 1500; // Adjust the bullet lifetime in milliseconds
+            let bulletLifetime = 1000; // Adjust the bullet lifetime in milliseconds
 
             // Normalize the direction vector
             directionVector.normalize();
@@ -325,7 +330,7 @@
 
             if (flak) {
                 // Set the bullet's velocity based on the direction vector and bullet speed
-                flak.setVelocity(directionVector.x * bulletSpeed, directionVector.y * bulletSpeed);
+                flak.setVelocity(directionVector.x * bulletSpeed + plane.body.velocity.x, directionVector.y * bulletSpeed + plane.body.velocity.y);
                 flak.rotation = Phaser.Math.Angle.Between(0, 0, directionVector.x, directionVector.y);
 
                 // Destroy the bullet after the specified lifetime
@@ -349,8 +354,7 @@
                 // Create a bullet with the calculated velocity
                 let bullet = bullets.create(bomb.x, bomb.y, 'bullet');
                 bullet.setVelocity(velocityX, velocityY);
-                const rotationAngle = Phaser.Math.Angle.Between(bullet.x, bullet.y, bomb.x, bomb.y) + bulletRotationOffset;
-                bullet.rotation = rotationAngle;
+                bullet.rotation = Phaser.Math.Angle.Between(bullet.x, bullet.y, bomb.x, bomb.y) + bulletRotationOffset;
                 setTimeout(function() {
                     bullet.destroy();
                 }, bulletLifetime);
@@ -371,8 +375,7 @@
                 // Create a bullet with the calculated velocity
                 let bullet = bullets.create(flak.x, flak.y, 'bullet');
                 bullet.setVelocity(velocityX, velocityY);
-                const rotationAngle = Phaser.Math.Angle.Between(bullet.x, bullet.y, flak.x, flak.y) + bulletRotationOffset;
-                bullet.rotation = rotationAngle;
+                bullet.rotation = Phaser.Math.Angle.Between(bullet.x, bullet.y, flak.x, flak.y) + bulletRotationOffset;
                 setTimeout(function() {
                     bullet.destroy();
                 }, bulletLifetime);
@@ -386,5 +389,6 @@
             }
         }
     </script>
+</div>
 </body>
 </html>

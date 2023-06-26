@@ -12,6 +12,7 @@
     <div class="auth-wrapper">
         <div class="auth-container" id="registrationContainer">
             <h1>Login</h1>
+            <a href="{{ route('register') }}" class="auth-redirect">Register</a>
             <div class="form-content">
                 <form method="POST" action="{{ route('login') }}" class="registration-step">
                     @csrf
@@ -47,6 +48,7 @@
                     </div>
                     <button type="submit">Next</button>
                 </form>
+
             </div>
         </div>
     </div>

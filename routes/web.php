@@ -4,12 +4,20 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
-// allow access to the resources/assets folder
+// Allows access to the app/assets folder
 Route::get('assets/{path}', function ($path) {
     return response()->file(storage_path('app/assets/' . $path));
 })->where('path', '.*');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', function () {
+        return view('profile');
+    })->name('profile');
 
+    Route::get('/shooter', function () {
+        return view('shooter');
+    })->name('shooter');
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,14 +33,6 @@ Route::get('/register', function () {
     session_destroy();
     return view('register');
 })->name('register');
-
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
-
-Route::get('/game', function () {
-    return view('test');
-})->name('game');
 
 Route::post('/register', [RegistrationController::class, 'store'])->name('register');
 Route::post('/register/pstep1', [RegistrationController::class, 'validate1'])->name('register.postStep1');
