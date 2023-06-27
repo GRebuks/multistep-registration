@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -25,6 +26,7 @@ class LoginController extends Controller
         }
         $user = auth()->user();
         session()->put('user', $user);
+        Auth::login($user);
         return redirect()->route('profile');
     }
 

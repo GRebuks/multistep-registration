@@ -203,10 +203,8 @@ form {
 .profile-container, .game-container {
     margin: 3rem auto auto;
     width: 90%;
-    height: 70vh;
+    /*height: 80vh;*/
     padding: 1rem;
-    min-width: 1700px;
-    min-height: 900px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);

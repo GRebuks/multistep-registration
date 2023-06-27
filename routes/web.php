@@ -51,3 +51,7 @@ Route::post('/register/pstep3', [RegistrationController::class, 'validate3'])->n
 
 Route::post('/login', [LoginController::class, 'store'])->name('login.post');
 
+//profile edit post
+Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.post');
+Route::post('/profile/password', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('profile.password.post');
+Route::post('/profile/delete', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.delete.post');
