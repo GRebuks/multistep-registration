@@ -14,7 +14,7 @@
             <h1 class="text-3xl font-bold">Login</h1>
             <a href="{{ route('register') }}" class="auth-redirect text-2xl mb-1">Register</a>
             <div class="form-content">
-                <form method="POST" action="{{ route('login') }}" class="registration-step">
+                <form method="POST" action="{{ route('login') }}" class="registration-step form">
                     @csrf
                     @foreach ($errors->all() as $error)
                         <p class="error">{{ $error }}</p>

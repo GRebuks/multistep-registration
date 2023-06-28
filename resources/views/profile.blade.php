@@ -1,6 +1,12 @@
 <x-app-layout>
     <div class="profile-container">
-        <h1 class="text-3xl font-bold">Profile</h1>
+        <div class="flex flex-row justify-between items-center ml-5 mr-4">
+            <h1 class="text-3xl font-bold">Profile</h1>
+            <div class="flex flex-row gap-5">
+                <a href="{{ route('home') }}" class="auth-redirect text-2xl">Home</a>
+                <a href="{{ route('logout') }}" class="auth-redirect text-2xl">Logout</a>
+            </div>
+        </div>
         <div class="flex flex-row flex-wrap">
             <div class="flex flex-col w-1/3">
                 <div class="flex flex-row bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
@@ -16,7 +22,7 @@
                 </div>
                 <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
                     <h2 class="text-xl">Change password</h2>
-                    <form method="POST" action="{{ route('profile.password.post') }}" class="gap-1.5" id="password-change">
+                    <form method="POST" action="{{ route('profile.password.post') }}" class="gap-1.5 text-center" id="password-change">
                         @if($errors->has('password-change'))
                             <p class="error">{{ $errors->first('password-change') }}</p>
                         @endif
@@ -88,7 +94,7 @@
                     </form>
                 </div>
                 <!--Delete account form -->
-                <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
+                <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5 text-center">
                     <form method="post" action="{{ route('profile.delete.post') }}" class="gap-1.5">
                         @csrf
                         <h2 class="text-xl">Delete account</h2>

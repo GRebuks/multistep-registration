@@ -27,7 +27,7 @@ class LoginController extends Controller
         $user = auth()->user();
         session()->put('user', $user);
         Auth::login($user);
-        return redirect()->route('profile');
+        return redirect()->route('home');
     }
 
 }

@@ -45,7 +45,7 @@ body {
     overflow: hidden;
 }
 
-form {
+.form {
     margin: 0 auto;
     width: 45vw;
     max-width: 80%;
@@ -210,10 +210,6 @@ form {
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
 }
 
-.game-container {
-    padding-top: 5rem;
-}
-
 .auth-redirect {
     margin: 0.5rem;
     font-size: 1.2rem;
@@ -227,6 +223,6 @@ form {
     color: #718096;
 }
 canvas {
+    margin: 3rem auto auto;
     display: block;
-    margin: auto;
 }

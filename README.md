@@ -22,6 +22,9 @@ Spēle domāta tīri laika nosišanai, tāpēc nav ieviestas nekādas uzvaras va
 + `Ctrl` - nomest bumbu
 + `Shift` - palaist raķetes
 
+### Inventāra lapa
+Inventāra lapā iespējams pievienot produktus ar nosaukumiem, paskaidrojumiem un citiem atribūtiem. Lapā ir pāris datu apstrādes iespējas, piemēram, pievienot, rediģēt, dzēst, apskatīt, meklēt un kārtot produktus. Lapa nav pilnveidota, tāpēc dažas funkcijas var nedarboties korekti, var būt pāris ievades kļūdas produkta izveidošanas formā.  
+TLDR: aptrūkās laika.
 
 ## Instalācija
 ### Prasības
@@ -70,4 +73,5 @@ Pēc komandu izpildes lapa pieejama localhost:8000
 + `localhost/profile` - lietotāja profila lapa
 + `localhost/logout` - izlogoties
 + `localhost/shooter` - šaušanas spēles lapa
++ `localhost/inventory` - inventāra lapa
 

@@ -31,7 +31,7 @@ session_start();
                 </div>
             </div>
             <div class="form-content">
-                <form method="POST" id="registration-step-1" action="{{ route('register.postStep1') }}" class="registration-step">
+                <form method="POST" id="registration-step-1" action="{{ route('register.postStep1') }}" class="registration-step form">
                     <h2 class="text-xl">Personal information</h2>
                     <p id="personal-error" class="error"></p>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -64,7 +64,7 @@ session_start();
                     <button type="submit">Next</button>
                 </form>
 
-                <form method="POST" id="registration-step-2" action="{{ route('register.postStep2') }}" class="d-none registration-step">
+                <form method="POST" id="registration-step-2" action="{{ route('register.postStep2') }}" class="d-none registration-step form">
                     <h2 class="text-xl">Contact information</h2>
                     <p id="contact-error" class="error"></p>
                     <div class="form-input-field">
@@ -86,7 +86,7 @@ session_start();
                     <button type="submit">Next</button>
                 </form>
 
-                <form method="POST" id="registration-step-3" action="{{ route('register.postStep3') }}" class="d-none registration-step">
+                <form method="POST" id="registration-step-3" action="{{ route('register.postStep3') }}" class="d-none registration-step form">
                     <h2 class="text-xl">Password</h2>
                     <p id="password-error" class="error"></p>
                     <div class="form-input-field">

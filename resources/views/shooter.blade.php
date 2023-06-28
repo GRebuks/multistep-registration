@@ -10,12 +10,19 @@
     <title>Document</title>
 </head>
 <body class="antialiased">
-<div class="game-container" id="shooter">
+<div class="game-container flex flex-col" id="shooter">
+    <div class="flex flex-row justify-between items-center ml-5 mr-4">
+        <h1 class="text-3xl font-bold">Shooter</h1>
+        <div class="flex flex-row gap-5">
+            <a href="{{ route('home') }}" class="auth-redirect text-2xl">Home</a>
+            <a href="{{ route('logout') }}" class="auth-redirect text-2xl">Logout</a>
+        </div>
+    </div>
     <script>
         // Phaser shooter game
         const config = {
             type: Phaser.AUTO,
-            width: 1600,
+            width: 1400,
             height: 800,
             backgroundColor: '#000000',
             parent: 'shooter',
@@ -89,7 +96,7 @@
             });
 
             // create food
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 400; i++) {
                 food = foodGroup.create(Phaser.Math.Between(0, config.width), Phaser.Math.Between(0, config.height), 'food');
                 food.setCollideWorldBounds(true);
                 food.setBounce(1);
@@ -115,6 +122,19 @@
         // update game objects
         function update ()
         {
+            // if count of food is 0, game over
+            if (foodGroup.countActive(true) === 0) {
+                gameOver = true;
+            }
+
+            if (gameOver) {
+                // Show score
+                this.add.text(400, 300, 'Game Over', { fontSize: '32px', fill: '#ffffff' });
+                this.add.text(400, 350, 'Score: ' + score, { fontSize: '32px', fill: '#ffffff' });
+
+                this.physics.pause();
+                return;
+            }
             movementVector = new Phaser.Math.Vector2(plane.body.velocity.x, plane.body.velocity.y);
             planePosition = new Phaser.Math.Vector2(plane.body.x + plane.width / 2, plane.body.y + plane.height / 2);
 
