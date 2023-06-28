@@ -24,7 +24,9 @@ Spēle domāta tīri laika nosišanai, tāpēc nav ieviestas nekādas uzvaras va
 
 ### Inventāra lapa
 Inventāra lapā iespējams pievienot produktus ar nosaukumiem, paskaidrojumiem un citiem atribūtiem. Lapā ir pāris datu apstrādes iespējas, piemēram, pievienot, rediģēt, dzēst, apskatīt, meklēt un kārtot produktus. Lapa nav pilnveidota, tāpēc dažas funkcijas var nedarboties korekti, var būt pāris ievades kļūdas produkta izveidošanas formā.  
-TLDR: aptrūkās laika.
+TLDR: aptrūkās laika.  
+
+Inventāra lapā zināma problēma - pēc meklēšanas vai kārtošanas nestrādā CSRF tokeni, tāpēc pēc meklēšanas vai kārtošanas nevar dzēst ierakstus.
 
 ## Instalācija
 ### Prasības
