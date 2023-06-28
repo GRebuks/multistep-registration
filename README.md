@@ -1,9 +1,10 @@
 # multistep-registration
 
-## Dependencies  
+## Instalācija  
 + Node package manager (npm)
-+ PHP 8.1.0 (or greater)
-+ Composer 2.2.0 (or greater)
++ PHP 8.1.0 (vai lielāks)
++ Composer 2.2.0 (vai lielāks)
+
 
 ```bash
 php artisan update
@@ -20,6 +21,8 @@ php artisan migrate
 ```
 
 ```bash
-php artisan serve
 npm run dev
+php artisan serve
 ```
+
+Pēc komandu izpildes lapa pieejama localhost:8000

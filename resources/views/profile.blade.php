@@ -24,14 +24,17 @@
 
                         <x-label for="password_old">Old password</x-label>
                         <x-input name="password_old" id="password_old" placeholder="Old password" type="password"></x-input>
+                        <x-error>{{ $errors->first('password_old') }}</x-error>
 
                         <x-label for="password_new">New password</x-label>
                         <x-input name="password_new" id="password_new" placeholder="New password" type="password"></x-input>
+                        <x-error>{{ $errors->first('password_new') }}</x-error>
 
                         <x-label for="password_new_confirmation">Confirm new password</x-label>
                         <x-input name="password_new_confirmation" id="password_new_confirmation" placeholder="Confirm new password" type="password"></x-input>
+                        <x-error>{{ $errors->first('password_new_confirmation') }}</x-error>
                         @if(session()->has('password-success'))
-                            <p class="success text-xs text-green-500">{{ session()->get('password-success') }}</p>
+                            <p class="success text-xs text-green-700">{{ session()->get('password-success') }}</p>
                         @endif
                         <x-confirm-button>Save</x-confirm-button>
                     </form>
@@ -79,7 +82,7 @@
                             <x-error>{{ $errors->first('birthday') }}</x-error>
                         </div>
                         @if(session()->has('profile-success'))
-                            <p class="profile-success text-xs">{{ session()->get('profile-success') }}</p>
+                            <p class="profile-success text-xs text-green-700">{{ session()->get('profile-success') }}</p>
                         @endif
                         <x-confirm-button>Save</x-confirm-button>
                     </form>

@@ -32,6 +32,7 @@ class ProfileController extends Controller
         $request->validate([
             'password_old' => 'required',
             'password_new' => 'required|confirmed',
+            'password_new_confirmation' => 'required'
         ]);
 
         if (!Auth::attempt(['email' => Auth::user()->email, 'password' => $request->password_old])) {
