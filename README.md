@@ -34,6 +34,8 @@ Lai varētu izpildīt instalāciju nepieciešams:
 + Composer 2.2.0 (vai lielāks)
 + MySQL (vai cita datubāze, bet tad .env failā jāmaina datubāzes tips un cita informācija)
 
+### ! Pēc projekta noklonēšanas terminālī/cmd pārvietoties uz projekta root mapi !
+
 ### Composer
 ```bash
 composer install
@@ -57,13 +59,17 @@ Pēc pieprasījuma jāizvēlas `yes` lai izveidotu datubāzi.
 ### NPM
 ```bash
 npm install
-npm run dev
 ```
 
 ### Palaišana
+Apakšā esošās komandas jālaiž vienlaicīgi katru savā cmd no root mapes.
+```bash
+npm run dev
+```
 ```bash
 php artisan serve
 ```
+
 Pēc komandu izpildes lapa pieejama localhost:8000
 
 ## Piederošie linki
