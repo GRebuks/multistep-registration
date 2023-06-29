@@ -29,14 +29,15 @@ TLDR: aptrūkās laika.
 Inventāra lapā zināma problēma - pēc meklēšanas vai kārtošanas nestrādā CSRF tokeni, tāpēc pēc meklēšanas vai kārtošanas nevar dzēst ierakstus.
 
 ## Instalācija
+
+### !!! Instalācijas darbību video materiāli atrodami zem `/public` mapes !!!
+
 ### Prasības
 Lai varētu izpildīt instalāciju nepieciešams:
 + Node package manager (npm)
 + PHP 8.1.0 (vai lielāks)
 + Composer 2.2.0 (vai lielāks)
 + MySQL (vai cita datubāze, bet tad .env failā jāmaina datubāzes tips un cita informācija)
-
-### ! Pēc projekta noklonēšanas terminālī/cmd pārvietoties uz projekta root mapi !
 
 ### Composer
 ```bash
