@@ -10,16 +10,37 @@
         <div class="flex flex-row flex-wrap">
             <div class="flex flex-col w-1/3">
                 <div class="flex flex-row bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
-                    <div class="flex flex-col align-middle justify-center w-40 h-40 rounded-full drop-shadow-lg">
-                        <img src="{{ asset('images/profile.png') }}" alt="Profile picture" class="rounded-full">
+                    <div class="flex flex-col align-middle justify-center w-1/3 rounded-full drop-shadow-lg">
+                        <div class="w-auto h-auto">
+                        @if(session()->get('user')->image != "")
+                            <img src="{{ asset('images/' . session()->get('user')->image) }}" alt="Profile picture" id="profile_picture" class="rounded-full object-center">
+                        @else
+                            <img src="{{ asset('images/default.png') }}" alt="Profile picture" id="profile_picture" class="rounded-full object-none w-10 h-auto">
+                        @endif
+                        </div>
                     </div>
-                    <div class="flex flex-col w-full justify-center">
+                    <div class="flex flex-col w-2/3 justify-center">
                         <h2 class="text-xl">{{ session()->get('user')->username }}</h2>
                         <p class="text-xl">{{ session()->get('user')->name }} {{ session()->get('user')->surname }}</p>
                         <p class="text-l">{{ session()->get('user')->email }}</p>
                         <p class="text-l">{{ date('d.m.Y', strtotime(session()->get('user')->birthday)) }}</p>
                     </div>
                 </div>
+                <!-- Create a profile picture form -->
+                <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
+                    <h2 class="text-xl">Change profile picture</h2>
+                    <form action="{{ route('profile.image.post') }}" method="POST" enctype="multipart/form-data" class="gap-1.5 text-center" id="profile-picture">
+                        @csrf
+                        <x-label for="image">Profile picture</x-label>
+                        <x-input name="image" id="image" type="file"></x-input>
+                        <x-error>{{ $errors->first('image') }}</x-error>
+                        @if(session()->has('image-success'))
+                            <p class="success text-xs text-green-700">{{ session()->get('image-success') }}</p>
+                        @endif
+                        <x-confirm-button>Save</x-confirm-button>
+                    </form>
+                </div>
+
                 <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
                     <h2 class="text-xl">Change password</h2>
                     <form method="POST" action="{{ route('profile.password.post') }}" class="gap-1.5 text-center" id="password-change">
@@ -81,6 +102,23 @@
                             <x-label for="email">E-mail</x-label>
                             <x-input name="email" id="email" placeholder="E-mail" value="{{ session()->get('user')->email }}"></x-input>
                             <x-error>{{ $errors->first('email') }}</x-error>
+                        </div>
+                        <div>
+                            <x-label for="phone">Phone</x-label>
+                            <x-country-code code_value="{{ session()->get('user')->country_code }}" phone_value="{{ session()->get('user')->phone }}"></x-country-code>
+                            <script>
+                                let code_value = "{{ session()->get('user')->country_code }}";
+                                if(code_value !== "") {
+                                    let select = document.getElementById('country_code');
+                                    for(let i = 0; i < select.options.length; i++) {
+                                        let option = select.options[i];
+                                        if(option.value === code_value) {
+                                            select.selectedIndex = i;
+                                            break;
+                                        }
+                                    }
+                                }
+                            </script>
                         </div>
                         <div>
                             <x-label for="birthday">Birthday</x-label>

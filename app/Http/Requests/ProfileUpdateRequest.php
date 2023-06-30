@@ -18,11 +18,13 @@ class ProfileUpdateRequest extends FormRequest
     {
         $user = Auth::user();
         return [
-            'name' => 'required',
-            'surname' => 'required',
+            'name' => 'required|min:2|alpha',
+            'surname' => 'required|min:2|alpha',
             'username' => ['required', Rule::unique('users')->ignore($user->id)],
             'birthday' => 'required|date|before:today',
-            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'email:strict', Rule::unique('users')->ignore($user->id)],
+            'country_code' => 'required',
+            'phone' => ['required', 'regex:/^[0-9]{8,15}$/', Rule::unique('users')->ignore($user->id)],
         ];
     }
 }

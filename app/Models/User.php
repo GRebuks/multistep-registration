@@ -18,14 +18,21 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    /* NOTICE:
+     * In order to have a 3NF (Third Normal Form) database, we would need to create a new table for the country code and phone number.
+     * However, for the sake of simplicity, we will keep the country code and phone number in the users table.
+     */
     protected $fillable = [
         'name',
         'surname',
         'username',
         'birthday',
+        'country_code',
         'phone',
         'email',
         'password',
+        'image',
     ];
 
     /**

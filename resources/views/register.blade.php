@@ -12,7 +12,7 @@ session_start();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Multistep - Register</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/registration.js','node_modules/better-dateinput-polyfill/dist/better-dateinput-polyfill.js' ,'node_modules/@fooloomanzoo/datetime-input/date-input.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/registration.js','node_modules/better-dateinput-polyfill/dist/better-dateinput-polyfill.js'])
     <meta name="dateinput-polyfill-media" content="screen">
     <meta name="dateinput-polyfill-format" content='{"day":"numeric","month":"numeric","year":"numeric"}'>
 </head>
@@ -80,7 +80,7 @@ session_start();
                         <div class="form-input-group">
                             <div class="form-input">
                                 <label for="phone" class="auth-label">Phone number</label>
-                                <input type="tel" name="phone" id="phone" pattern="[0-9]{8}" class="auth-input">
+                                <x-country-code></x-country-code>
                             </div>
                         </div>
 

@@ -41,7 +41,6 @@ class ProfileController extends Controller
         if ($request->password_old == $request->password_new) {
             return redirect()->route('profile')->withErrors(['password_new' => 'New password cannot be the same as old password']);
         }
-        //check if new password has at least one uppercase letter, one lowercase letter, one number and one special character
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/', $request->password_new)) {
             return redirect()->route('profile')->withErrors(['password_new' => 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character']);
         }
@@ -49,6 +48,24 @@ class ProfileController extends Controller
         $user->password = bcrypt($request->password_new);
         $user->save();
         return redirect()->route('profile')->with('password-success', 'Password changed successfully');
+    }
+    public function changeImage(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048|dimensions:max_width=1000,max_height=1000|dimensions:min_width=100,min_height=100|dimensions:ratio=1/1'
+        ]);
+        $user = Auth::user();
+        $imageName = $user->id . '.' . $request->image->extension();
+        if($user->image != "") {
+            if (file_exists(public_path('images/' . $user->image))) {
+                unlink(public_path('images/' . $user->image));
+            }
+        }
+        $request->image->move(public_path('images'), $imageName);
+        $user->image = $imageName;
+        $user->save();
+        session()->put('user', $user);
+        return redirect()->route('profile')->with('image-success', 'Image changed successfully');
     }
 
 }

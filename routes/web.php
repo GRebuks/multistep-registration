@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.post');
     Route::post('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.password.post');
     Route::post('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete.post');
+    Route::post('/profile/image', [ProfileController::class, 'changeImage'])->name('profile.image.post');
 });
 
 Route::get('/', function () {

@@ -12,6 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        /* NOTICE:
+         * In order to have a 3NF (Third Normal Form) database, we would need to create a new table for the country code and phone number.
+         * However, for the sake of simplicity, we will keep the country code and phone number in the users table.
+         */
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name'); //
@@ -19,9 +23,11 @@ return new class extends Migration
             $table->string('email')->unique(); //
             $table->string('username')->unique(); //
             $table->date('birthday');
+            $table->string('country_code');
             $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password'); //
+            $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,6 +38,7 @@ return new class extends Migration
                 'email' => '',
                 'username' => 'johndoe',
                 'birthday' => '1990-01-01',
+                'country_code' => '1',
                 'phone' => '1234567890',
                 'password' => 'password',
             )

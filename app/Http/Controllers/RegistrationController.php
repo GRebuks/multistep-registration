@@ -36,6 +36,7 @@ class RegistrationController extends Controller
             'username' => $_SESSION['username'],
             'birthday' => $_SESSION['birthday'],
             'email' => $_SESSION['email'],
+            'country_code' => $_SESSION['country_code'],
             'phone' => $_SESSION['phone'],
             'password' => $_SESSION['password'],
         ]);
@@ -51,8 +52,8 @@ class RegistrationController extends Controller
         session_start();
         try {
             $this->validate(request(), [
-                'name' => 'required|min:2',
-                'surname' => 'required|min:2',
+                'name' => 'required|min:2|alpha',
+                'surname' => 'required|min:2|alpha',
                 'username' => 'required|unique:users|min:8',
                 'birthday' => 'required|date|before:today',
             ]);
@@ -74,13 +75,15 @@ class RegistrationController extends Controller
         session_start();
         try {
             $this->validate(request(), [
-                'email' => 'required|email|unique:users',
-                'phone' => 'required|unique:users',
+                'email' => 'required|email:strict|unique:users',
+                'country_code' => 'required',
+                'phone' => 'required|unique:users|regex:/^[0-9]{8,15}$/',
             ]);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
         }
         $_SESSION['email'] = request('email');
+        $_SESSION['country_code'] = request('country_code');
         $_SESSION['phone'] = request('phone');
         $data = [
             'step' => 3,
