@@ -51,9 +51,9 @@ class RegistrationController extends Controller
         session_start();
         try {
             $this->validate(request(), [
-                'name' => 'required',
-                'surname' => 'required',
-                'username' => 'required|unique:users',
+                'name' => 'required|min:2',
+                'surname' => 'required|min:2',
+                'username' => 'required|unique:users|min:8',
                 'birthday' => 'required|date|before:today',
             ]);
         } catch (ValidationException $e) {
@@ -93,10 +93,16 @@ class RegistrationController extends Controller
         session_start();
         try {
             $this->validate(request(), [
-                'password' => 'required|confirmed',
+                'password' => 'required|confirmed|min:8',
             ]);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
+        }
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/', request('password'))) {
+            $data = [
+                'password' => ['The password must contain at least 1 uppercase, 1 lowercase, 1 number and 1 special character.'],
+            ];
+            return \response()->json($data, 422);
         }
         $_SESSION['password'] = password_hash(request('password'), PASSWORD_BCRYPT);
         $data = [

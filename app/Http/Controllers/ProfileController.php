@@ -31,7 +31,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'password_old' => 'required',
-            'password_new' => 'required|confirmed',
+            'password_new' => 'required|confirmed|min:8',
             'password_new_confirmation' => 'required'
         ]);
 
@@ -40,6 +40,10 @@ class ProfileController extends Controller
         }
         if ($request->password_old == $request->password_new) {
             return redirect()->route('profile')->withErrors(['password_new' => 'New password cannot be the same as old password']);
+        }
+        //check if new password has at least one uppercase letter, one lowercase letter, one number and one special character
+        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/', $request->password_new)) {
+            return redirect()->route('profile')->withErrors(['password_new' => 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character']);
         }
         $user = Auth::user();
         $user->password = bcrypt($request->password_new);
