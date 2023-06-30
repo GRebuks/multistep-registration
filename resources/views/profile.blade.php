@@ -17,7 +17,7 @@
                         <h2 class="text-xl">{{ session()->get('user')->username }}</h2>
                         <p class="text-xl">{{ session()->get('user')->name }} {{ session()->get('user')->surname }}</p>
                         <p class="text-l">{{ session()->get('user')->email }}</p>
-                        <p class="text-l">{{ session()->get('user')->birthday }}</p>
+                        <p class="text-l">{{ date('d.m.Y', strtotime(session()->get('user')->birthday)) }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
@@ -58,7 +58,7 @@
             </div>
             <div class="flex flex-col w-2/3">
                 <!--Profile edit form -->
-                <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5">
+                <div class="flex flex-col bg-white rounded-lg drop-shadow-xl m-5 p-3 pl-5 gap-5 z-10">
                     <h2 class="text-xl">Edit profile information</h2>
                     <form action="{{ route('profile.post') }}" method="POST" class="gap-1.5 content-stretch items-stretch" id="update">
                         @csrf
@@ -84,7 +84,7 @@
                         </div>
                         <div>
                             <x-label for="birthday">Birthday</x-label>
-                            <x-input name="birthday" id="birthday" type="date" placeholder="Birthday" value="{{ session()->get('user')->birthday }}"></x-input>
+                            <x-input name="birthday" id="birthday" type="date" placeholder="dd.mm.yyyy" value="{{ session()->get('user')->birthday }}"></x-input>
                             <x-error>{{ $errors->first('birthday') }}</x-error>
                         </div>
                         @if(session()->has('profile-success'))
